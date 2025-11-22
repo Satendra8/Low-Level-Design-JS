@@ -1,0 +1,251 @@
+Solid Principles
+
+
+S - Single Responsibility Principle (SRP) - invoice class (save, pdf, print), create sepearate classes
+O - Open/Closed Principle - invoiceSave (saveToPostgres, saveToCassandra, saveToCosmos), create abstract class with save and extends for all DBs
+L - Liskov's Substitution Principle - Bird class, penguin cannot fly, create class FlyingBird and extend to all flying birds
+I - Interface Segregration Principle - create a RestaurantEmployee class, create seperate interface for chef and waiter
+D - Dependency Inversion Principle - MacBook depends on object Keyboard and Mouse, create object outside and pass in constructor, take wired and wireless example
+
+Advantage of following principles
+
+  Help us to write better code:
+
+    1. Avoid duplicate code
+    2. Easy to maintain
+    3. Easy to understand
+    4. Flexible software
+    5. Reduce complexity
+    
+   
+S. A class should have only 1 reason to change.
+
+	    class Marker:
+                def __init__(self, name, color, year, price):
+                    self.name = name
+                    self.color = color
+                    self.year = year
+                    self.price = price
+                
+            # Wrong Approach
+
+            class Invoice:
+                def __init__(self, marker, quantity):
+                    self.marker = marker
+                    self.quantity = quantity
+
+                def calculate_total(self):
+                    return self.marker.price * self.quantity
+
+                def print_invoice(self):
+                    print(f"Invoice for {self.quantity} {self.marker.color}")
+                    print(f"Year: {self.marker.year}")
+                    print(f"Total: {self.calculate_total()}")
+
+                def save_invoice(self):
+                    pass
+
+            # Right Approach
+
+            class SaveInvoice:
+                def __init__(self, invoice):
+                    self.invoice = invoice
+
+                def save_invoice(self, invoice):
+                    self.invoice = invoice
+
+                def save_to_db(self):
+                    # save to db
+                    pass
+
+
+            class PrintInvoice:
+                def __init__(self, invoice):
+                    self.invoice = invoice
+
+                def print_invoice(self, invoice):
+                    print(invoice)
+
+                def print_to_pdf(self):
+                    # code to print invoice to PDF
+                    pass
+		
+
+O. Open for extension but closed for modification
+
+            # Wrong Approach
+
+            class InvoiceDao:
+                def __init__(self, invoice):
+                    self.invoice = invoice
+
+                def save_to_db(self):
+                    # save invoice to database
+                    pass
+
+                def save_to_file(self):
+                    # save invoice to file
+                    pass
+
+
+            # Right Approach
+            from abc import ABC, abstractmethod
+
+            class InvoiceDao(ABC):
+                @abstractmethod
+                def save(self):
+                    """ save data"""
+                    pass
+
+
+            class DatabaseInvoiceDao(InvoiceDao):
+                def save(self):
+                    # save invoice to database
+                    pass
+
+
+            class FileInvoiceDao(InvoiceDao):
+                def save(self):
+                    # save invoice to file
+                    pass
+	
+
+L. Liskov Substitution Principle - If a class B is subtype of class A, then we should be able to replace object of A with B without breaking the behaviour of the program.
+
+ -> subclass should extend the capablity of parent class not narrow it down
+ 
+ 
+interface Bike {
+	void turnOnEngine();
+	void accelerate();
+}
+
+class MotorCycle implements Bike {
+	boolean isEngineOn;
+	int speed;
+	
+	public void turnOnEngine() {
+		//turn on the engine!
+		isEngineOn = true;
+	}
+	
+	/** subclass should extend the capablity of parent class not narrow it down */
+	public void accelerate() {
+		throw new AssertionError("there is no engine");
+	}
+		
+class Bicycle implemnents Bike {
+	public void turnOnEngine() {
+		//turn on the engine!
+		isEngineOn = true;
+	}
+	
+	public void accelerate() {
+		//increase the speed
+		isEngineOn = true;
+	}
+}
+	
+
+I. Interface segmented principle - Interface should be such, that client should not implement unnecessary functions they do not need
+
+// Wrong Approach
+
+interface RestaurantEmployee {
+	void washDishes();
+	void serveCustomers();
+	void cookFood();
+}
+
+class waiter implements RestaurantEmployee {
+	public void washDishes() {
+		//not my job
+	}
+	
+	public void serveCustomers() {
+		//yes and here is my implementation
+		System.out.println("serving the customer");
+	}
+	
+	public void cookFood() {
+		//not my job
+	}
+}
+
+
+// Right Approach
+
+interface WaiterInterface {
+	void serveCustomers();
+	void takeOrder();
+}
+
+class waiter implements WaiterInterface {
+	public void serveCustomers() {
+		System.out.println("serving the customer");
+	}
+	
+	public void takeOrder() {
+		System.out.println("taking orders");
+	}
+}
+
+
+interface ChefInterface {
+	void cookFood();
+	void decideMenu();
+}
+
+class chef implements ChefInterface {
+	public void cookFood() {
+		System.out.println("cooking food");
+	}
+	
+	public void decideMenu() {
+		System.out.println("deciding menu");
+	}
+}
+
+
+
+
+D. Dependency inversion principle - Class should depend on interfaces rather than concrete classes
+
+//Wrong Approach
+class MacBook {
+	private final Wiredkeyboard keyboard;
+	private final WiredMouse mouse;
+	
+	public MacBook() {
+		keyboard = new Wiredkeyboard();
+		mouse = new WiredMouse();
+	}
+}
+
+
+
+//Right Approach
+interface Mouse {
+	void wiredMouse();
+	void bluetoothMouse();
+}
+
+interface Keyboard {
+	void wiredKeyboard();
+	void bluetoothKeyboard();
+}
+
+
+
+class MacBook {
+	private final Keyboard keyboard;
+	private final Mouse mouse;
+	
+	public MacBook(keyboard keyboard, Mouse mouse) {
+		this.keyboard = keyboard;
+		this.mouse = mouse;
+	}
+}
+ 
+ 
+ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
