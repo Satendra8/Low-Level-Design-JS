@@ -294,3 +294,57 @@ class PinoLogger {
 const winston = new WinStonAdaptor()
 
 winston.logInfo("This is me")
+
+
+
+// Right example
+
+
+class InternalPaymentSystem {
+
+
+    pay() {
+
+    }
+
+    getTransactionNumber() {
+
+    }
+
+    isTransactionSuccessful() {
+
+    }
+}
+
+class Paypal {
+
+    sendMoney() {
+
+    }
+
+    getUiId() {
+
+    }
+
+    isPaymentDone() {
+
+    }
+}
+
+class PaymentAdapter {
+    paypal: Paypal
+
+    pay() {
+        this.paypal.sendMoney()
+
+    }
+
+    getTransactionNumber() {
+        this.paypal.getUiId()
+
+    }
+
+    isTransactionSuccessful() {
+        this.paypal.isPaymentDone()
+    }
+}

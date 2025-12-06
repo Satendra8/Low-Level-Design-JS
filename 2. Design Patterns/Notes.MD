@@ -33,3 +33,12 @@
 | Coupon on Shopping cart   |
 | Payment Gateway           |
 | Resource poll Manager     |
+
+
+
+
+Need Revision
+    Adapter = charger = same functionality but method name is different (MISE) - method inside method call
+    Bridger = grow both interface independently - (AC, TV, Radio) (NormalRemote, SmartRemote) (IDIR) - interface device, interface remote
+    Composite = File and Folder - Tree like structure - FNF
+    Facade = (buy, payment, send notification) - combine all in one

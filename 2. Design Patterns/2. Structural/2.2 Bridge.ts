@@ -445,3 +445,26 @@ const s = new SMS()
 const remind = new Reminder()
 
 remind.notify(s)
+
+
+
+//---------------------------------------------------------------------------------------------
+
+
+Device
+    TV
+    AC
+    Radio
+
+
+Remote
+    NormalRemote
+    SmartRemote
+
+
+
+const d1 = new TV()
+r1 = new NormalRemote()
+
+r1.click(d1)
+
